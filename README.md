@@ -11,7 +11,7 @@ The DNN Wiki Project is seeking new members to participate in ongoing project en
 * Technical Writers
 * Wiki Super Users (Subject Matter Experts)
 * Testers
-We plan to offer a free open source Wiki solution that is not just the best Wiki solution for DNN, but is a best of breed solution regardless of platform. Volunteers must commit to working a minimum of 10 hours per week for a minimum 3 months. If you are interested in joining the DNN Wiki Project team, please contact me via CodePlex email: [url:https://www.codeplex.com/site/users/view/JosephAllen]
+We plan to offer a free open source Wiki solution that is not just the best Wiki solution for DNN, but is a best of breed solution regardless of platform. If you are interested in joining the DNN Wiki Project team, please contact us here on GitHub.
 
 !! Key Wiki features:
 
@@ -27,14 +27,6 @@ We plan to offer a free open source Wiki solution that is not just the best Wiki
 !! Latest changes:
 * Allow change page name/url
 * Removed 'View History' from certain inapplicable viewstates
-
-!! Planned Release (Early Fall 2013):
-* Journal integration (5.0.1)
-* Improved Layout (5.0.0)
-
-!! Planned Release (Late Fall 2013):
-* Social Group Integration (in progress)
-* Improved Search (in progress)
 
 *Find Us on Facebook*
 [url:https://www.facebook.com/pages/DNNWiki/560089424031750]

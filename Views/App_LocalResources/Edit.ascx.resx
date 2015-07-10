@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblPageCreationError.Text" xml:space="preserve">
+    <value>There is already a page by that name.</value>
+  </data>
+  <data name="NoEditAccess.Text" xml:space="preserve">
+    <value>You do not have permissions to edit content in this module.</value>
+  </data>
+  <data name="plDescription.Help" xml:space="preserve">
+    <value>This description will get used in the Meta-Description tag for the HTML of the DotNetNuke page.</value>
+  </data>
+  <data name="plDescription.Text" xml:space="preserve">
+    <value>Description (500 Chars)</value>
+  </data>
+  <data name="plKeywords.Help" xml:space="preserve">
+    <value>The Meta-Keywords associated with this topic.</value>
+  </data>
+  <data name="plKeywords.Text" xml:space="preserve">
+    <value>Keywords (500 chars)</value>
+  </data>
+  <data name="plPageName.Help" xml:space="preserve">
+    <value>Page Name is the name that will be used in the URL for your Wiki Entry</value>
+  </data>
+  <data name="plPageName.Text" xml:space="preserve">
+    <value>Page Name:</value>
+  </data>
+  <data name="plTitle.Help" xml:space="preserve">
+    <value>This is the page title that will get Displayed in the browser title, but not used in the URL.</value>
+  </data>
+  <data name="plTitle.Text" xml:space="preserve">
+    <value>Title (256 chars)</value>
+  </data>
+  <data name="shSeo.Text" xml:space="preserve">
+    <value>Page Search Engine Optimization</value>
+  </data>
+  <data name="StartAllowDiscuss.Text" xml:space="preserve">
+    <value>Enable Page Comments</value>
+  </data>
+  <data name="StartAllowRatings.Text" xml:space="preserve">
+    <value>Enable Page Ratings</value>
+  </data>
+  <data name="StartCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="StartDelete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="StartSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="StartSaveAndContinue.Text" xml:space="preserve">
+    <value>Save &amp; Continue</value>
+  </data>
+  <data name="StartWikiDirectionDetails.Text" xml:space="preserve">
+    <value>* To add a page simply enter its name in text 
+            with double brackets surrounding it while writing out your content; 
+            your only limitation is it may not be longer than 50 characters. 
+            This is also how you make a link to an existing page. 
+            &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: [[My Link]] 
+            &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: [[Another Link In Wiki]] &lt;BR&gt;&lt;BR&gt;* 
+            Once you have added a page you can edit your new page by navigating 
+            to it and clicking "Edit". &lt;BR&gt;&lt;BR&gt;* There is no limit to the number 
+            of new pages you can add while creating new content. &lt;BR&gt;&lt;BR&gt;* New 
+            pages will not show up in the Index view nor will they be searchable 
+            until they have content created for them. &lt;BR&gt;&lt;BR&gt;* You can add a 
+            title to your link by adding a Pipe after the name. When you do this 
+            the title will show as a hyperlink instead of the page name. 
+            &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: [[My Link|A Title]] 
+            &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: [[Another Link In Wiki|I can say what 
+            ever I want]] &lt;BR&gt;&lt;BR&gt;* To link to Wiki Page&amp;nbsp;on another Tab you 
+            can add a Second Pipe after the Page title with the Number to the 
+            other Tab &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example using just the page name: 
+            [[My Page||35]] &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example with page title: [[My 
+            Page|My Title here|35]] &lt;BR&gt;&lt;BR&gt;* To link back to the home page make 
+            your bracket link to WikiHomePage &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: 
+            [[WikiHomePage]] &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;Example: 
+            [[WikiHomePage|Home]] &lt;BR&gt;&lt;BR&gt;* Because we use the HTML WYSIWYG 
+            editor, email links and URLs can be added by typing them in and 
+            letting the editor handle them; or as normal&amp;nbsp;&amp;lt;a href&amp;gt; 
+            tags&amp;nbsp;in the HTML view of the 
+      editor</value>
+  </data>
+  <data name="StartWikiDirections.Text" xml:space="preserve">
+    <value>Wiki Text Directions</value>
+  </data>
+  <data name="SubmitButton.Text" xml:space="preserve">
+    <value>Post Comment</value>
+  </data>
+  <data name="ErrorDeletingTopic.Text" xml:space="preserve">
+    <value>An error ocurred when trying to delete the topic.</value>
+  </data>
+  <data name="WarningDUPLICATENAME.Text" xml:space="preserve">
+    <value>There's already a wiki topic with the same name.</value>
+  </data>
+  <data name="JournalInsertTopicSummary.Text" xml:space="preserve">
+    <value>Added new topic [TopicName].</value>
+  </data>
+  <data name="JournalUpdateTopicSummary.Text" xml:space="preserve">
+    <value>Updated topic [TopicName].</value>
+  </data>
+</root>

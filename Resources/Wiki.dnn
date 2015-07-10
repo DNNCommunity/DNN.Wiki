@@ -1,0 +1,187 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.Wiki" type="Module" version="05.00.01">
+      <friendlyName>Wiki</friendlyName>
+      <description>The DotNetNuke Wiki module, more information available at www.dnnsoftware.com</description>
+      <owner>
+        <name>DNN Corp</name>
+        <organization>DNNSoftware.com</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>training@dnnsoftware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.htm"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.02</dependency>
+      </dependencies>
+      <components>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\Wiki</basePath>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.00.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.01.SqlDataProvider</name>
+              <version>01.00.01</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.02.SqlDataProvider</name>
+              <version>01.00.02</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.03.SqlDataProvider</name>
+              <version>01.00.03</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.04.SqlDataProvider</name>
+              <version>01.00.04</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>04.00.02.SqlDataProvider</name>
+              <version>04.00.02</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>04.01.00.SqlDataProvider</name>
+              <version>04.01.00</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>04.02.00.SqlDataProvider</name>
+              <version>04.02.00</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>04.02.01.SqlDataProvider</name>
+              <version>04.02.01</version>
+            </script>
+            <script type="Install">
+              <path>Resources\SqlDataProvider</path>
+              <name>04.05.03.SqlDataProvider</name>
+              <version>04.05.03</version>
+            </script>
+            <script type="UnInstall">
+              <path>Resources\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>04.02.01</version>
+            </script>
+          </scripts>
+        </component>
+
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/Wiki</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="Module">
+          <desktopModule>
+            <moduleName>Wiki</moduleName>
+            <foldername>Wiki</foldername>
+            <businessControllerClass>DotNetNuke.Wiki.Utilities.FeatureController</businessControllerClass>
+            <supportedFeatures />
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Wiki</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+                <moduleControls>
+                  <moduleControl>
+                    <controlKey />
+                    <controlSrc>DesktopModules/Wiki/Views/Router.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle />
+                    <controlType>View</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Administration</controlKey>
+                    <controlSrc>DesktopModules/Wiki/Views/Administration.ascx</controlSrc>
+                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlTitle>Administration</controlTitle>
+                    <controlType>Edit</controlType>
+                    <iconFile />
+                    <helpUrl />
+                    <viewOrder>0</viewOrder>
+                    <supportsPopUps>True</supportsPopUps>
+                  </moduleControl>
+                </moduleControls>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <name>DotNetNuke.Wiki.dll</name>
+              <sourceFileName>DotNetNuke.Wiki.dll</sourceFileName>
+            </assembly>
+          </assemblies>
+        </component>
+
+        <component type="File">
+          <files>
+            <basePath>DesktopModules\wiki</basePath>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.00.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.01.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.02.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.03.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>01.00.04.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>04.00.02.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>04.02.00.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>04.02.01.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>04.05.03.SqlDataProvider</name>
+            </file>
+            <file>
+              <path>Resources\SqlDataProvider</path>
+              <name>04.05.05.SqlDataProvider</name>
+            </file>
+          </files>
+        </component>
+
+        <component type="Cleanup" version="05.00.01" fileName="Resources\CleanUp\Cleanup.04.05.02.txt" />
+        <component type="Cleanup" version="05.00.01" fileName="Resources\CleanUp\Cleanup.05.00.00.txt" />
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

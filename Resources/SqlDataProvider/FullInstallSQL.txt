@@ -1,0 +1,1113 @@
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsGetByModuleID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsGetByModuleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAll') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAll
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAllByModuleID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetByNameForModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetByNameForModule
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicSearchWiki') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicSearchWiki
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic
+GO
+
+-- Creating tables
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_Settings') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_Settings (
+ [SettingID] int IDENTITY (1, 1) NOT NULL,
+ [ModuleID] int NOT NULL,
+ [ContentEditorRoles] nvarchar(255) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_Settings') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_Settings ADD CONStrAINT 
+    PK_Wiki_Settings PRIMARY KEY CLUSTERED (SettingID) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_Topic') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_Topic (
+ [TopicID] int IDENTITY (1, 1) NOT NULL,
+ [ModuleID] int NOT NULL,
+ [Content] ntext NULL,
+ [Name] nvarchar(50) NULL,
+ [UpdateDate] datetime NOT NULL,
+ [UpdatedBy] nvarchar(101) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_Topic') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_Topic ADD CONStrAINT 
+    PK_Wiki_Topic PRIMARY KEY CLUSTERED (TopicID) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistory') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_TopicHistory (
+ [TopicHistoryID] int IDENTITY (1, 1) NOT NULL,
+ [TopicID] int NOT NULL,
+ [Content] ntext NULL,
+ [Name] nvarchar(50) NULL,
+ [UpdateDate] datetime NOT NULL,
+ [UpdatedBy] nvarchar(101) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_TopicHistory') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_TopicHistory ADD CONStrAINT 
+    PK_Wiki_TopicHistory PRIMARY KEY CLUSTERED (TopicHistoryID) ON [PRIMARY]
+
+GO
+
+-- Creating table relations
+
+-- Creating stored procedures
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsAdd
+  @moduleID int, @contentEditorRoles nvarchar(255)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Settings
+    (ModuleID, ContentEditorRoles)
+  VALUES
+    (@ModuleID, @ContentEditorRoles)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsUpdate
+  @settingID int, @moduleID int, @contentEditorRoles nvarchar(255)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Settings SET
+    ModuleID = @moduleID, ContentEditorRoles = @contentEditorRoles
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsDelete
+  @settingID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_Settings
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsGet
+  @settingID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    SettingID, ModuleID, ContentEditorRoles
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsGetByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    SettingID, ModuleID, ContentEditorRoles
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    ModuleID = @ModuleID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicAdd
+  @moduleID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Topic
+    (ModuleID, Content, [Name], [UpdateDate], UpdatedBy)
+  VALUES
+    (@ModuleID, @Content, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicUpdate
+  @moduleID int, @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Topic SET
+    ModuleID = @moduleID,  Content = @content, [Name] = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicID = @topicID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicDelete
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_Topic
+  WHERE
+    TopicID = @topicID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGet
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE
+    TopicID = @topicID
+   ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAll
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  Where  dbo.dnn_Wiki_topic.ModuleID = @ModuleID
+  ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen
+  @ModuleID int,
+  @DaysBack int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  Where  dbo.dnn_Wiki_topic.ModuleID = @ModuleID
+  and UpdateDate >= DateDiff(d,@DaysBack,GetDate())
+  ORDER BY UpdateDate Desc
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetByNameForModule
+  @ModuleID int, @name nvarchar(200)
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE dbo.dnn_Wiki_topic.ModuleID =  @ModuleID and  dbo.dnn_Wiki_topic.name =  @name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicSearchWiki
+  @Search ntext,
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE
+  ( name like @Search or content like @Search ) 
+  AND
+  ModuleID = @ModuleID
+  Order By Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+  @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_TopicHistory
+    (TopicID, Content, Name, UpdateDate, UpdatedBy)
+  VALUES
+    (@TopicID, @Content, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+  @topicHistoryID int, @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_TopicHistory SET
+    TopicID = @topicID, Content = @content, Name = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryDelete
+  @topicHistoryID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_TopicHistory
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryGet
+  @topicHistoryID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_TopicHistory
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_TopicHistory
+  WHERE dbo.dnn_Wiki_topichistory.topicID =  @topicID
+  ORDER BY UpdateDate
+GO
+
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_SettingsGetByModuleID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_SettingsGetByModuleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAll') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAll
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAllByModuleID') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleID
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetByNameForModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetByNameForModule
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicSearchWiki') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicSearchWiki
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryDelete') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryDelete
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+ DROP PROCEDURE dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic
+GO
+
+-- Creating tables
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_Settings') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_Settings (
+ [SettingID] int IDENTITY (1, 1) NOT NULL,
+ [ModuleID] int NOT NULL,
+ [ContentEditorRoles] nvarchar(255) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_Settings') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_Settings ADD CONStrAINT 
+    PK_Wiki_Settings PRIMARY KEY CLUSTERED (SettingID) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_Topic') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_Topic (
+ [TopicID] int IDENTITY (1, 1) NOT NULL,
+ [ModuleID] int NOT NULL,
+ [Content] ntext NULL,
+ [Name] nvarchar(50) NULL,
+ [UpdateDate] datetime NOT NULL,
+ [UpdatedBy] nvarchar(101) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_Topic') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_Topic ADD CONStrAINT 
+    PK_Wiki_Topic PRIMARY KEY CLUSTERED (TopicID) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_TopicHistory') and OBJECTPROPERTY(id, N'IsTable') = 1)
+CREATE table dbo.dnn_Wiki_TopicHistory (
+ [TopicHistoryID] int IDENTITY (1, 1) NOT NULL,
+ [TopicID] int NOT NULL,
+ [Content] ntext NULL,
+ [Name] nvarchar(50) NULL,
+ [UpdateDate] datetime NOT NULL,
+ [UpdatedBy] nvarchar(101) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'PK_Wiki_TopicHistory') and OBJECTPROPERTY(id, N'IsPrimaryKey') = 1)
+  ALTER table dbo.dnn_Wiki_TopicHistory ADD CONStrAINT 
+    PK_Wiki_TopicHistory PRIMARY KEY CLUSTERED (TopicHistoryID) ON [PRIMARY]
+
+GO
+
+-- Creating table relations
+
+-- Creating stored procedures
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsAdd
+  @moduleID int, @contentEditorRoles nvarchar(255)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Settings
+    (ModuleID, ContentEditorRoles)
+  VALUES
+    (@ModuleID, @ContentEditorRoles)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsUpdate
+  @settingID int, @moduleID int, @contentEditorRoles nvarchar(255)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Settings SET
+    ModuleID = @moduleID, ContentEditorRoles = @contentEditorRoles
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsDelete
+  @settingID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_Settings
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsGet
+  @settingID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    SettingID, ModuleID, ContentEditorRoles
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    SettingID = @settingID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_SettingsGetByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    SettingID, ModuleID, ContentEditorRoles
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    ModuleID = @ModuleID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicAdd
+  @moduleID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Topic
+    (ModuleID, Content, [Name], [UpdateDate], UpdatedBy)
+  VALUES
+    (@ModuleID, @Content, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicUpdate
+  @moduleID int, @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Topic SET
+    ModuleID = @moduleID,  Content = @content, [Name] = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicID = @topicID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicDelete
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_Topic
+  WHERE
+    TopicID = @topicID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGet
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE
+    TopicID = @topicID
+   ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAll
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  Where  dbo.dnn_Wiki_topic.ModuleID = @ModuleID
+  ORDER BY Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen
+  @ModuleID int,
+  @DaysBack int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  Where  dbo.dnn_Wiki_topic.ModuleID = @ModuleID
+  and UpdateDate >= DateDiff(d,@DaysBack,GetDate())
+  ORDER BY UpdateDate Desc
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicGetByNameForModule
+  @ModuleID int, @name nvarchar(200)
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE dbo.dnn_Wiki_topic.ModuleID =  @ModuleID and  dbo.dnn_Wiki_topic.name =  @name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicSearchWiki
+  @Search ntext,
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Topic
+  WHERE
+  ( name like @Search or content like @Search ) 
+  AND
+  ModuleID = @ModuleID
+  Order By Name
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+  @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_TopicHistory
+    (TopicID, Content, Name, UpdateDate, UpdatedBy)
+  VALUES
+    (@TopicID, @Content, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+  @topicHistoryID int, @topicID int, @content ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_TopicHistory SET
+    TopicID = @topicID, Content = @content, Name = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryDelete
+  @topicHistoryID int
+  AS
+  SET NOCOUNT ON
+  DELETE FROM dbo.dnn_Wiki_TopicHistory
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryGet
+  @topicHistoryID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_TopicHistory
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+CREATE PROCEDURE dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_TopicHistory
+  WHERE dbo.dnn_Wiki_topichistory.topicID =  @topicID
+  ORDER BY UpdateDate
+GO
+
+
+
+CREATE table dbo.dnn_Tmp_Wiki_Topic
+	(
+	TopicID int NOT NULL IDENTITY (1, 1),
+	ModuleID int NOT NULL,
+	Content ntext NULL,
+	Cache ntext NULL,
+	Name nvarchar(50) NULL,
+	UpdateDate datetime NOT NULL,
+	UpdatedBy nvarchar(101) NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT dbo.dnn_Tmp_Wiki_Topic ON
+GO
+IF EXISTS(SELECT * FROM dbo.dnn_Wiki_Topic)
+	 EXEC('INSERT INTO dbo.dnn_Tmp_Wiki_Topic (TopicID, ModuleID, Content, Name, UpdateDate, UpdatedBy)
+		SELECT TopicID, ModuleID, Content, Name, UpdateDate, UpdatedBy FROM dbo.dnn_Wiki_Topic TABLOCKX')
+GO
+SET IDENTITY_INSERT dbo.dnn_Tmp_Wiki_Topic OFF
+GO
+DROP table dbo.dnn_Wiki_Topic
+GO
+EXECUTE sp_rename N'dnn_Tmp_Wiki_Topic', N'dnn_Wiki_Topic', 'OBJECT'
+GO
+ALTER table dbo.dnn_Wiki_Topic ADD CONStrAINT
+	PK_Wiki_Topic PRIMARY KEY CLUSTERED 
+	(
+	TopicID
+	) ON [PRIMARY]
+
+GO
+
+CREATE table dbo.dnn_Tmp_Wiki_TopicHistory
+	(
+	TopicHistoryID int NOT NULL IDENTITY (1, 1),
+	TopicID int NOT NULL,
+	Content ntext NULL,
+	Cache ntext NULL,
+	Name nvarchar(50) NULL,
+	UpdateDate datetime NOT NULL,
+	UpdatedBy nvarchar(101) NOT NULL
+	)  ON [PRIMARY]
+	 TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT dbo.dnn_Tmp_Wiki_TopicHistory ON
+GO
+IF EXISTS(SELECT * FROM dbo.dnn_Wiki_TopicHistory)
+	 EXEC('INSERT INTO dbo.dnn_Tmp_Wiki_TopicHistory (TopicHistoryID, TopicID, Content, Name, UpdateDate, UpdatedBy)
+		SELECT TopicHistoryID, TopicID, Content, Name, UpdateDate, UpdatedBy FROM dbo.dnn_Wiki_TopicHistory TABLOCKX')
+GO
+SET IDENTITY_INSERT dbo.dnn_Tmp_Wiki_TopicHistory OFF
+GO
+DROP table dbo.dnn_Wiki_TopicHistory
+GO
+EXECUTE sp_rename N'dnn_Tmp_Wiki_TopicHistory', N'dnn_Wiki_TopicHistory', 'OBJECT'
+GO
+ALTER table dbo.dnn_Wiki_TopicHistory ADD CONStrAINT
+	PK_Wiki_TopicHistory PRIMARY KEY CLUSTERED 
+	(
+	TopicHistoryID
+	) ON [PRIMARY]
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicAdd
+  @moduleID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Topic
+    (ModuleID, Content, Cache, [Name], [UpdateDate], UpdatedBy)
+  VALUES
+    (@ModuleID, @Content, @cache, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicUpdate
+  @moduleID int, @topicID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Topic SET
+    ModuleID = @moduleID,  Content = @content, Cache = @cache, [Name] = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicID = @topicID
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+  @topicID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_TopicHistory
+    (TopicID, Content, Cache, Name, UpdateDate, UpdatedBy)
+  VALUES
+    (@TopicID, @Content, @cache, @Name, @UpdateDate, @UpdatedBy)
+  SELECT SCOPE_IDENTITY()
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+  @topicHistoryID int, @topicID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101)
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_TopicHistory SET
+    TopicID = @topicID, Content = @content, cache = @cache, Name = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy
+  WHERE
+    TopicHistoryID = @topicHistoryID
+    
+update dbo.dnn_Wiki_Topic set UpdatedBy = 'Anonymous' where UpdatedBy = 'Anonyoums'
+update dbo.dnn_Wiki_TopicHistory set UpdatedBy = 'Anonymous' where UpdatedBy = 'Anonyoums'
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_CommentParents') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[CommentParents]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.dnn_Wiki_Comments') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[Comments]
+GO
+
+CREATE table dbo.dnn_Wiki_CommentParents (
+	[CommentParentId] [int] IDENTITY (1, 1) NOT NULL ,
+	[Name] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[ParentId] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE table dbo.dnn_Wiki_Comments (
+	[CommentId] [int] IDENTITY (1, 1) NOT NULL ,
+	[Name] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Email] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Comment] [varchar] (1024) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[Datetime] [datetime] NOT NULL ,
+	[Ip] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+	[ParentId] [int] NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER table dbo.dnn_Wiki_CommentParents WITH NOCHECK ADD 
+	CONStrAINT [PK_dnn_Wiki_CommentParents] PRIMARY KEY  CLUSTERED 
+	(
+		[CommentParentId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER table dbo.dnn_Wiki_Comments WITH NOCHECK ADD 
+	CONStrAINT [PK_dnn_Wiki_Comments] PRIMARY KEY  CLUSTERED 
+	(
+		[CommentId]
+	)  ON [PRIMARY] 
+GO
+
+ALTER table dbo.dnn_Wiki_Comments ADD 
+	CONStrAINT [DF_dnn_Wiki_Comments_Datetime] DEFAULT (getdate()) FOR [Datetime]
+GO
+
+
+-- Alter Tables
+ALTER table dbo.dnn_Wiki_Topic ADD
+	UpdatedByUserID int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_UpdatedByUserID DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	AllowDiscussions bit NOT NULL CONStrAINT DF_dnn_Wiki_Topic_AllowDiscussions DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	AllowRatings bit NOT NULL CONStrAINT DF_dnn_Wiki_Topic_AllowRatings DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingOneCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingOneCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingTwoCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingTwoCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingThreeCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingThreeCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingFourCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingFourCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingFiveCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingFiveCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingSixCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingSixCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingSevenCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingSevenCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingEightCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingEightCount DEFAULT 0
+GO
+
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingNineCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingNineCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Topic ADD
+	RatingTenCount int NOT NULL CONStrAINT DF_dnn_Wiki_Topic_RatingTenCount DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_TopicHistory ADD
+	UpdatedByUserID int NOT NULL CONStrAINT DF_dnn_Wiki_TopicHistory_UpdatedByUserID DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Settings ADD
+	AllowDiscussions bit NOT NULL CONStrAINT DF_dnn_Wiki_Settings_AllowDiscussions DEFAULT 0
+GO
+
+ALTER table dbo.dnn_Wiki_Settings ADD
+	AllowRatings bit NOT NULL CONStrAINT DF_dnn_Wiki_Settings_AllowRatings DEFAULT 0
+GO
+
+-- Alter Procedures
+ALTER PROCEDURE dbo.dnn_Wiki_TopicAdd
+  @moduleID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101), @updatedByUserID int, @AllowDiscussions bit, @AllowRatings bit, @RatingOneCount int, @RatingTwoCount int, @RatingThreeCount int, @RatingFourCount int, @RatingFiveCount int, @RatingSixCount int, @RatingSevenCount int, @RatingEightCount int, @RatingNineCount int, @RatingTenCount int
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Topic
+    (ModuleID, Content, Cache, [Name], [UpdateDate], UpdatedBy, updatedByUserID, AllowDiscussions,AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, RatingNineCount, RatingTenCount)
+  VALUES
+    (@ModuleID, @Content, @cache, @Name, @UpdateDate, @UpdatedBy, @updatedByUserID, @AllowDiscussions, @AllowRatings, @RatingOneCount, @RatingTwoCount, @RatingThreeCount, @RatingFourCount, @RatingFiveCount, @RatingSixCount, @RatingSevenCount, @RatingEightCount, @RatingNineCount, @RatingTenCount)
+  SELECT SCOPE_IDENTITY()
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicUpdate
+  @moduleID int, @topicID int, @content ntext, @cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101), @updatedByUserID int, @AllowDiscussions bit, @AllowRatings bit, @RatingOneCount int, @RatingTwoCount int, @RatingThreeCount int, @RatingFourCount int, @RatingFiveCount int, @RatingSixCount int, @RatingSevenCount int, @RatingEightCount int, @RatingNineCount int, @RatingTenCount int
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Topic SET
+    ModuleID = @moduleID,  Content = @content, Cache = @cache, [Name] = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy, updatedByUserID = @updatedByUserID, AllowDiscussions = @AllowDiscussions, AllowRatings = @AllowRatings,  
+    RatingOneCount = @RatingOneCount, RatingTwoCount = @RatingTwoCount, RatingThreeCount = @RatingThreeCount, RatingFourCount = @RatingFourCount, RatingFiveCount = @RatingFiveCount, RatingSixCount = @RatingSixCount, RatingSevenCount = @RatingSevenCount, RatingEightCount = @RatingEightCount, RatingNineCount = @RatingNineCount, RatingTenCount = @RatingTenCount
+  WHERE
+    TopicID = @topicID
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_SettingsAdd
+  @moduleID int, @contentEditorRoles nvarchar(255), @AllowDiscussions bit, @AllowRatings bit
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_Settings
+    (ModuleID, ContentEditorRoles, AllowDiscussions, AllowRatings)
+  VALUES
+    (@ModuleID, @ContentEditorRoles, @AllowDiscussions, @AllowRatings)
+  SELECT SCOPE_IDENTITY()
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_SettingsUpdate
+  @settingID int, @moduleID int, @contentEditorRoles nvarchar(255), @AllowDiscussions bit, @AllowRatings bit
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_Settings SET
+    ModuleID = @moduleID, ContentEditorRoles = @contentEditorRoles, AllowDiscussions = @AllowDiscussions, AllowRatings = @AllowRatings
+  WHERE
+    SettingID = @settingID
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_SettingsGet
+  @settingID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+   *
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    SettingID = @settingID
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_SettingsGetByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    *
+  FROM dbo.dnn_Wiki_Settings
+  WHERE
+    ModuleID = @ModuleID
+GO
+
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicGet
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  WHERE
+    TopicID = @topicID
+   ORDER BY Name
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicGetAll
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  ORDER BY Name
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleID
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  Where  t.ModuleID = @ModuleID
+  ORDER BY Name
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicGetAllByModuleChangedWhen
+  @ModuleID int,
+  @DaysBack int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  Where  t.ModuleID = @ModuleID
+  and UpdateDate >= DateDiff(d,@DaysBack,GetDate())
+  ORDER BY UpdateDate Desc
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicGetByNameForModule
+  @ModuleID int, @name nvarchar(200)
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  WHERE t.ModuleID =  @ModuleID and  t.name =  @name
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicSearchWiki
+  @Search ntext,
+  @ModuleID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicID, ModuleID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, 
+    AllowDiscussions, AllowRatings, RatingOneCount, RatingTwoCount, RatingThreeCount, 
+    RatingFourCount, RatingFiveCount, RatingSixCount, RatingSevenCount, RatingEightCount, 
+    RatingNineCount, RatingTenCount, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_Topic t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  WHERE
+  ( name like @Search or content like @Search ) 
+  AND
+  ModuleID = @ModuleID
+  Order By Name
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryGet
+  @topicHistoryID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicHistoryID, TopicID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_TopicHistory t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  WHERE
+    t.TopicHistoryID = @topicHistoryID
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryGetHistoryForTopic
+  @topicID int
+  AS
+  SET NOCOUNT ON
+  SELECT 
+    TopicHistoryID, TopicID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID, isnull(u.FirstName,'Anonymous') + ' ' + isnull(u.LastName,'User') UpdatedByUsername
+  FROM dbo.dnn_Wiki_TopicHistory t
+  LEFT OUTER JOIN dbo.dnn_Users u on u.UserID = t.UpdatedByUserID
+  WHERE t.topicID =  @topicID
+  ORDER BY UpdateDate
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryAdd
+  @topicID int, @content ntext, @Cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101), @updatedByUserID int
+  AS
+  SET NOCOUNT ON
+  INSERT INTO dbo.dnn_Wiki_TopicHistory
+    (TopicID, Content, Cache, Name, UpdateDate, UpdatedBy, UpdatedByUserID)
+  VALUES
+    (@TopicID, @Content,@Cache,@Name, @UpdateDate, @UpdatedBy, @UpdatedByUserID)
+  SELECT SCOPE_IDENTITY()
+GO
+
+ALTER PROCEDURE dbo.dnn_Wiki_TopicHistoryUpdate
+  @topicHistoryID int, @topicID int, @content ntext, @Cache ntext, @name nvarchar(50), @updateDate datetime, @updatedBy nvarchar(101), @updatedByUserID int
+  AS
+  SET NOCOUNT ON
+  UPDATE dbo.dnn_Wiki_TopicHistory SET
+    TopicID = @topicID, Content = @content, cache = @Cache, Name = @name, UpdateDate = @updateDate, UpdatedBy = @updatedBy, UpdatedByUserID = @UpdatedByUserID
+  WHERE
+    TopicHistoryID = @topicHistoryID
+GO
+
+-- Insert Data
+
+
+-- Update Data
+UPDATE dbo.dnn_Wiki_Topic set UpdatedByUserID = UserID
+FROM dbo.dnn_Wiki_Topic inner join dbo.dnn_Users on UpdatedBy = UserName
+
+UPDATE dbo.dnn_Wiki_TopicHistory set UpdatedByUserID = UserID
+FROM dbo.dnn_Wiki_TopicHistory inner join dbo.dnn_Users on UpdatedBy = UserName

@@ -1,0 +1,106 @@
+﻿/* style to display links for index*/
+
+.WikiWrapper {
+    width: 100%;
+}
+
+.WikiMenu {
+}
+
+    .WikiMenu li {
+        list-style-type: none;
+		float: left;
+		margin: 0px 10px;
+		padding: 20px 0 30px 0;
+    }
+
+    .WikiMenu ul {
+        margin: 0px;
+        padding: 0px;
+    }
+
+.wikiIndex {
+}
+
+.CommandButton .wikiIndex {
+    border: solid 1px blue !Important;
+}
+
+.inlineStyle {
+    BORDER-RIGHT: darkgray 1px solid;
+    BORDER-TOP: darkgray 1px solid;
+    BORDER-LEFT: darkgray 1px solid;
+    BORDER-BOTTOM: darkgray 1px solid;
+}
+
+.WikiLinksPanel {
+    width: 100%;
+    float: left;
+}
+
+.WikiContent {
+	clear: both;
+    float: right;
+    width: 100%;
+	margin-top: 10px;
+}
+
+#DnnWiki pre {
+    background-color: #FAFAFA;
+    border: 1px solid #DADADA;
+    margin: 1em 1em 1em 1.6em;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    padding: 2px;
+    width: 95%;
+}
+
+.Wiki_CommentsTable {
+    margin: 10px 0;
+}
+
+.WikiButtons {
+    padding: 10px 0 10px 0;
+}
+
+/* wiki settings label style */
+.wsLabel {
+    padding: 15px 0 5px 0;
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+
+.WikiHeader {
+    width: 100%;
+    clear: both;
+}
+
+.WikiTitle {
+    float: left;
+}
+
+.WikiRating {
+    float: right;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}

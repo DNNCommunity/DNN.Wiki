@@ -1,0 +1,63 @@
+﻿' Remove old versions of Wiki
+' Delete Old Root Files
+Desktopmodules\wiki\04.05.02.txt
+Desktopmodules\wiki\Administration.ascx
+Desktopmodules\wiki\Edit.ascx
+Desktopmodules\wiki\License.txt
+Desktopmodules\wiki\module.css
+Desktopmodules\wiki\PageRatings.ascx
+Desktopmodules\wiki\RecentChanges.ascx
+Desktopmodules\wiki\ReleaseNotes.txt
+Desktopmodules\wiki\Ratings.ascx
+Desktopmodules\wiki\Router.ascx
+Desktopmodules\wiki\Search.ascx
+Desktopmodules\wiki\Start.ascx
+Desktopmodules\wiki\TopicHistory.ascx
+' Delete  Old App_LocalResources files
+DesktopModules\wiki\App_LocalResources\Administration.ascx.resx
+DesktopModules\wiki\App_LocalResources\edit.ascx.resx
+DesktopModules\wiki\App_LocalResources\Router.ascx.resx
+DesktopModules\wiki\App_LocalResources\SharedResources.resx
+' Delete Old Controls files
+DesktopModules\wiki\Controls\App_LocalResources\Index.ascx.resx
+DesktopModules\wiki\Controls\App_LocalResources\WikiButton.ascx.resx
+DesktopModules\wiki\Controls\App_LocalResources\WikiMenu.ascx.resx
+DesktopModules\wiki\Controls\Index.ascx
+DesktopModules\wiki\Controls\WikiButton.ascx
+DesktopModules\wiki\Controls\WikiMenu.ascx
+' Delete Old Image files
+DesktopModules\wiki\images\bcImage.gif
+DesktopModules\wiki\images\HideNav.gif
+DesktopModules\wiki\images\Home.gif
+DesktopModules\wiki\images\Index.gif
+DesktopModules\wiki\images\page.gif
+DesktopModules\wiki\images\RecentChanges.gif
+DesktopModules\wiki\images\Search.gif
+DesktopModules\wiki\images\ShowNav.gif
+' Delete Old package files
+DesktopModules\wiki\packages\package\4.5.0\Wiki_04.05.00_ReleaseNotes.txt
+DesktopModules\wiki\packages\package\4.5.0\Wiki_04.05.00_TestCases.txt
+' Delete Old SQL Data Provider Files
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\01.00.00.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\01.00.01.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\01.00.02.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\01.00.03.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\01.00.04.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\04.00.02.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\04.01.00.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\04.02.00.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\04.02.01.SqlDataProvider
+DesktopModules\wiki\Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider
+' Delete Old Documentaion Files
+DesktopModules\wiki\Tests\Documentation\Welcome.css
+DesktopModules\wiki\Tests\Documentation\Welcome.htm
+' Delete Old Resources File Versions
+DesktopModules\wiki\Resources\04.05.02.txt
+DesktopModules\wiki\Resources\ReleaseNotes.txt
+' Delete Empty Directories
+Desktopmodules\wiki\App_LocalResources\
+Desktopmodules\wiki\Controls\
+Desktopmodules\wiki\images\
+Desktopmodules\wiki\packages\
+Desktopmodules\wiki\Providers\
+Desktopmodules\wiki\webcontrols\
