@@ -48,6 +48,10 @@
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
 [Pp]ackages/
 
+[Bb]in/
+[Oo]bject/
+[Ii]nstall/
+
 # Visual Studio profiler
 *.psess
 *.vsp
