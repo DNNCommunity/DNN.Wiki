@@ -219,4 +219,13 @@
   <data name="WikiSecurity.Text" xml:space="preserve">
     <value>Wiki Editor Roles</value>
   </data>
+  <data name="CssSettings.Text" xml:space="preserve">
+    <value>CSS Settings</value>
+  </data>
+  <data name="lblTableStyles.Help" xml:space="preserve">
+    <value>The custom CSS classes to be injected into each &amp;lt;table&amp;gt; HTML element</value>
+  </data>
+  <data name="lblTableStyles.Text" xml:space="preserve">
+    <value>Table Styles (CSS class)</value>
+  </data>
 </root>

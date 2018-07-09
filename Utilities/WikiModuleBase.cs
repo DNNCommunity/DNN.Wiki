@@ -557,7 +557,18 @@ namespace DotNetNuke.Wiki.Utilities
         /// <returns>html for the topics</returns>
         protected string CreateTable(List<Topic> topicCollection)
         {
-            System.Text.StringBuilder tableHTML = new System.Text.StringBuilder("<table><tr><th>");
+            System.Text.StringBuilder tableHTML = new System.Text.StringBuilder();
+
+            if (string.IsNullOrEmpty(WikiSettings.TableStyles))
+            {
+                tableHTML.Append("<table>");
+            }
+            else
+            {
+                tableHTML.Append($"<table class=\"{WikiSettings.TableStyles}\">");
+            }
+
+            tableHTML.Append("<tr><th>");
             tableHTML.Append(Localization.GetString("BaseCreateTableTopic", this.RouterResourceFile));
             tableHTML.Append("</th><th>");
             tableHTML.Append(Localization.GetString("BaseCreateTableModBy", this.RouterResourceFile));
@@ -638,7 +649,17 @@ namespace DotNetNuke.Wiki.Utilities
         protected string CreateHistoryTable()
         {
             System.Text.StringBuilder tableText = new System.Text.StringBuilder(1000);
-            tableText.Append("<table><tr><th>");
+
+            if (string.IsNullOrEmpty(WikiSettings.TableStyles))
+            {
+                tableText.Append("<table>");
+            }
+            else
+            {
+                tableText.Append($"<table class=\"{WikiSettings.TableStyles}\">");
+            }
+
+            tableText.Append("<tr><th>");
             tableText.Append(Localization.GetString("BaseCreateTableTopic", this.RouterResourceFile));
             tableText.Append("</th><th>");
             tableText.Append(Localization.GetString("BaseCreateTableTitle", this.RouterResourceFile));
