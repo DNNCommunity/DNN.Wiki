@@ -27,5 +27,8 @@ We plan to offer a free open source Wiki solution that is not just the best Wiki
 * Allow change page name/url
 * Removed 'View History' from certain inapplicable viewstates
 
-### Support and discussion
+## Support and discussion
 [Find Us on Facebook](https://www.facebook.com/pages/DNNWiki/560089424031750)
+
+## Contributing
+If you would like to contribute to this project, please read [CONTRIBUTING.md](https://github.com/DNNCommunity/DNN.Wiki/blob/master/CONTRIBUTING.md)
