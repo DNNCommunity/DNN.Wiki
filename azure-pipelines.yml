@@ -13,5 +13,5 @@ trigger:
 jobs:
 - template: azure-pipelines.yml@DevOps
   parameters:
-    version: "5.0.$[counter('versioncounter', 0)]"
+    version: "5.0.1.$[counter('versioncounter', 0)]"
     moduleType: "WEB-FORMS"
