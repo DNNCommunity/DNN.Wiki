@@ -1,19 +1,37 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# The DNN Community Modules Build .yml.
+# Add steps to the build, run tests, deploy and more:
+# https://aka.ms/yml
+#
+# NOTE: Whitespace is super important with yml, please respect 
+#       the necessary whitespace for different jobs/tasks/etc
 
+resources:
+  repositories:
+    # References the DNN Community Modules Build DevOps repository which contains
+    # yml files that will make running the build simple. It is not required to use
+    # the repository but it will make configuring the build easier
+    - repository: DevOps 
+      type: git
+      ref: 'refs/heads/master'
+      name: "DevOps.Templates"
+
+
+# Build triggers tell Azure DevOps when to run the build.
+# PR builds are implied unless explicitly defined
 trigger:
-- master
+  branches:
+    include:
+    - master # The CI build will execute with every commit to the master branch of PR merge
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+jobs:
+- template: azure-pipelines.yml@DevOps # The entry point template from the DevOps repository
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # there are optional parameters you can send to the build. If
+  # you would like to use the option parameters just uncomment 
+  # 'parameters:' and then the parameters you would like to use
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  #parameters:
+    #version: "5.0.1.$[counter('versioncounter', 0)]" # Sets the current build version that includes a revision counter. Default: '1.0.0.0'
+    #configuration: 'Release' # The build configuration. Default: 'Release'
+    #platform: 'Any CPU' # The build platform. Default: 'Any CPU'
+    #solution: '**/*.sln' # The path to the solution file. Default: '**/*.sln'
