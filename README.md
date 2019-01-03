@@ -1,6 +1,8 @@
 # DNN.Wiki
 DNN Wiki is a module that combines a wiki engine with your favourite html editor
 
+Andrew's Change
+
 ## Project Description
 The project is written in C# and available for download as both - an installable production package, as well as an installable source package.
 
