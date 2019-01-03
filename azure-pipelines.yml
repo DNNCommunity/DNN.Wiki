@@ -33,7 +33,6 @@ jobs:
 
   parameters:
     githubRepo: 'DNN.Wiki'
-    githubToken: '$(GitHub.Token)'
     githubOrganization: 'HoeflingSoftware'
     #version: "5.0.1.$[counter('versioncounter', 0)]" # Sets the current build version that includes a revision counter. Default: '1.0.0.0'
     #configuration: 'Release' # The build configuration. Default: 'Release'
