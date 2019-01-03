@@ -21,6 +21,7 @@ resources:
 trigger:
   branches:
     include:
+    - development
     - master # The CI build will execute with every commit to the master branch of PR merge
 
 jobs:
