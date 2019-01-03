@@ -12,7 +12,7 @@ resources:
     # the repository but it will make configuring the build easier
     - repository: DevOps 
       type: git
-      ref: 'refs/heads/master'
+      ref: 'refs/heads/release-notes'
       name: "DevOps.Templates"
 
 
@@ -31,7 +31,10 @@ jobs:
   # you would like to use the option parameters just uncomment 
   # 'parameters:' and then the parameters you would like to use
 
-  #parameters:
+  parameters:
+    github.repo: 'DNN.Wiki'
+    github.token: '$(GitHub.Token)'
+    github.organization: 'HoeflingSoftware'
     #version: "5.0.1.$[counter('versioncounter', 0)]" # Sets the current build version that includes a revision counter. Default: '1.0.0.0'
     #configuration: 'Release' # The build configuration. Default: 'Release'
     #platform: 'Any CPU' # The build platform. Default: 'Any CPU'
