@@ -12,7 +12,7 @@ resources:
     # the repository but it will make configuring the build easier
     - repository: DevOps 
       type: git
-      ref: 'refs/heads/release-notes'
+      ref: 'refs/heads/master'
       name: "DevOps.Templates"
 
 
