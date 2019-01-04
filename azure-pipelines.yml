@@ -31,7 +31,7 @@ jobs:
   # you would like to use the option parameters just uncomment 
   # 'parameters:' and then the parameters you would like to use
 
-  parameters:
+  #parameters:
     #githubRepo: 'DNN.Wiki'
     #githubOrganization: 'HoeflingSoftware'
     #releaseBranch: 'refs/pull/19/merge' # Sets the release branch, most Core Modules use 'refs/head/master' which is the default. If you want to specify a different release branch use this parameter.
