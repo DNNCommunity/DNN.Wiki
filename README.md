@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/DNNCommunity/Community%20Modules/_apis/build/status/DNNCommunity.DNN.Wiki?branchName=master)](https://dev.azure.com/DNNCommunity/Community%20Modules/_build/latest?definitionId=4&branchName=master)
+
 # DNN.Wiki
 DNN Wiki is a module that combines a wiki engine with your favourite html editor
 
