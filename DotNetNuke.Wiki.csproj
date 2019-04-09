@@ -314,6 +314,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="web.config" />
+    <Content Include="Resources\SqlDataProvider\05.00.07.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

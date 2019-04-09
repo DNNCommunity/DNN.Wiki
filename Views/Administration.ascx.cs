@@ -163,6 +163,7 @@ namespace DotNetNuke.Wiki.Views
                         this.DefaultCommentsMode.Checked = this.mSettingsModel.DefaultDiscussionMode == true;
                         this.DefaultRatingMode.Checked = this.mSettingsModel.DefaultRatingMode == true;
                         this.NotifyMethodUserComments.Checked = this.mSettingsModel.CommentNotifyUsers == true;
+                        this.TableStyles.Text = this.mSettingsModel.TableStyles;
 
                         this.NotifyMethodCustomRoles.Checked =
                             !(!string.IsNullOrWhiteSpace(this.mSettingsModel.CommentNotifyRoles) &&
@@ -512,6 +513,7 @@ namespace DotNetNuke.Wiki.Views
                 this.mSettingsModel.DefaultDiscussionMode = this.DefaultCommentsMode.Checked;
                 this.mSettingsModel.DefaultRatingMode = this.DefaultRatingMode.Checked;
                 this.mSettingsModel.CommentNotifyUsers = this.NotifyMethodUserComments.Checked;
+                this.mSettingsModel.TableStyles = this.TableStyles.Text;
 
                 if (this.mSettingsModel.ModuleId == -1)
                 {

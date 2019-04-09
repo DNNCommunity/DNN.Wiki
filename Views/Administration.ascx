@@ -82,6 +82,17 @@
             <asp:CheckBox ID="DefaultRatingMode" runat="server" Enabled="false" />
         </div>
     </fieldset>
+    <h2 id="dnnSitePanel-CssSettings" class="dnnFormSectionHead">
+        <a href="" class="dnnSectionExpanded">
+            <%=LocalizeString("CssSettings")%>
+        </a>
+    </h2>
+    <fieldset>
+        <div class="dnnFormItem">
+            <dnn:Label ID="lblTableStyles" runat="server" />
+            <asp:TextBox ID="TableStyles" AutoPostBack="true" runat="server" />
+        </div>
+    </fieldset>
 </div>
 <br />
 <asp:LinkButton ID="SaveButton" resourcekey="SaveButton" OnClick="SaveButton_Click" runat="server" CssClass="dnnPrimaryAction" />
