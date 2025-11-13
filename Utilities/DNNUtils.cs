@@ -26,6 +26,7 @@
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Journal;
@@ -67,7 +68,7 @@ namespace DotNetNuke.Wiki.Utilities
 
                 if (lstEmailsAddresses.Count > 0)
                 {
-                    DotNetNuke.Entities.Portals.PortalSettings objPortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
+                    var objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     string strResourceFile = Globals.ApplicationPath + "/DesktopModules/Wiki/Views/" + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile;
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
@@ -130,11 +131,12 @@ namespace DotNetNuke.Wiki.Utilities
             string linkToTopic,
             int currentTab,
             string topicName,
-            SharedEnum.DNNJournalType journalType)
+            SharedEnum.DNNJournalType journalType,
+            ModuleInfo moduleInfo)
         {
             if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                UserInfo user = UserController.GetCurrentUserInfo();
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
                 if (user != null)
                 {
                     // Post to DotnetNuke Journal
@@ -159,7 +161,7 @@ namespace DotNetNuke.Wiki.Utilities
                     //// http: //www.dnnsoftware.com/wiki/loc/history/Page/Journal/Revision/11
 
                     journalItem.Title = topicName;
-                    journalController.SaveJournalItem(journalItem, currentTab); // saving
+                    journalController.SaveJournalItem(journalItem, moduleInfo);
                 }
             }
         }

@@ -24,6 +24,7 @@
 #endregion Copyright
 
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Wiki.BusinessObjects;
@@ -298,8 +299,8 @@ namespace DotNetNuke.Wiki.Views
         /// data.</param>
         private void Page_Init(object sender, System.EventArgs e)
         {
-            Framework.jQuery.RequestUIRegistration();
-            Framework.jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>
@@ -368,7 +369,7 @@ namespace DotNetNuke.Wiki.Views
             // process portal roles
             DotNetNuke.Security.Roles.RoleController objRoles = new DotNetNuke.Security.Roles.RoleController();
 
-            var arrRoles = objRoles.GetPortalRoles(PortalId).OfType<RoleInfo>();
+            var arrRoles = objRoles.GetRoles(PortalId);
             foreach (var objRole in arrRoles)
             {
                 arrAvailableAuthViewRoles.Add(new ListItem(objRole.RoleName, objRole.RoleName));

@@ -82,7 +82,7 @@ namespace DotNetNuke.Wiki.BusinessObjects
 
             if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                this.mCurrentUser = UserController.GetCurrentUserInfo();
+                this.mCurrentUser = UserController.Instance.GetCurrentUserInfo();
             }
         }
 

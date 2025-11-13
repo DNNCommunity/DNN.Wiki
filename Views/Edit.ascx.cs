@@ -379,7 +379,8 @@ namespace DotNetNuke.Wiki.Views
                 DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.PageTopic)),
                 this.TabId,
                 this.PageTopic,
-                journalType);
+                journalType,
+                this.ModuleConfiguration);
         }
 
         /// <summary>
