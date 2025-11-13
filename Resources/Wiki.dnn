@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Wiki" type="Module" version="05.00.01">
+    <package name="DotNetNuke.Wiki" type="Module" version="05.01.00">
       <friendlyName>Wiki</friendlyName>
       <description>The DotNetNuke Wiki module, more information available at www.dnnsoftware.com</description>
       <owner>
@@ -12,7 +12,7 @@
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.htm"></releaseNotes>
       <dependencies>
-        <dependency type="CoreVersion">07.00.02</dependency>
+        <dependency type="CoreVersion">08.00.04</dependency>
       </dependencies>
       <components>
         <component type="Script">
