@@ -188,7 +188,7 @@ namespace DotNetNuke.Wiki.BusinessObjects
                                 if (role.ToLower().Equals("all users"))
                                 {
                                     // Trap against fake roles
-                                    var arrUsers = UserController.GetUsers(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId).OfType<UserInfo>();
+                                    var arrUsers = UserController.GetUsers(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentSettings().PortalId).OfType<UserInfo>();
                                     foreach (var objUser in arrUsers)
                                     {
                                         if (!lstUsers.Contains(objUser.Email))

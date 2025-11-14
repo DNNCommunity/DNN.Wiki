@@ -12,7 +12,7 @@
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.htm"></releaseNotes>
       <dependencies>
-        <dependency type="CoreVersion">08.00.04</dependency>
+        <dependency type="CoreVersion">09.13.09</dependency>
       </dependencies>
       <components>
         <component type="Script">
@@ -129,6 +129,31 @@
             <assembly>
               <name>DotNetNuke.Wiki.dll</name>
               <sourceFileName>DotNetNuke.Wiki.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <name>HtmlSanitizer.dll</name>
+              <version>9.0.886.0</version>
+              <sourceFileName>HtmlSanitizer.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <name>AngleSharp.dll</name>
+              <version>0.17.1.0</version>
+              <sourceFileName>AngleSharp.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <name>AngleSharp.Css.dll</name>
+              <version>0.17.0.0</version>
+              <sourceFileName>AngleSharp.Css.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <name>System.Collections.Immutable.dll</name>
+              <version>9.0.124.61010</version>
+              <sourceFileName>System.Collections.Immutable.dll</sourceFileName>
+            </assembly>
+            <assembly>
+              <name>System.Text.Encoding.CodePages.dll</name>
+              <version>6.0.21.52210</version>
+              <sourceFileName>System.Text.Encoding.CodePages.dll</sourceFileName>
             </assembly>
           </assemblies>
         </component>

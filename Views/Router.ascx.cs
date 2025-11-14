@@ -30,6 +30,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.Utilities;
 using DotNetNuke.Wiki.Views.SharedControls;
 using System;
+using System.Web;
 using System.Web.UI;
 
 namespace DotNetNuke.Wiki.Views
@@ -124,7 +125,7 @@ namespace DotNetNuke.Wiki.Views
                 {
                     if (objAction.CommandName.Equals(ModuleActionType.PrintModule))
                     {
-                        objAction.Url += "&topic=" + WikiMarkup.EncodeTitle(this.PageTopic);
+                        objAction.Url += "&topic=" + HttpUtility.UrlEncode(this.PageTopic);
                     }
                 }
             }

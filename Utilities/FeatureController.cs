@@ -151,7 +151,7 @@ namespace DotNetNuke.Wiki.Utilities
                     {
                         node = node_loopVariable;
                         var topic = new Topic();
-                        topic.PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                        topic.PortalSettings = PortalController.Instance.GetCurrentSettings();
                         topic.AllowDiscussions = bool.Parse(node.Attributes["AllowDiscussions"].Value);
                         topic.AllowRatings = bool.Parse(node.Attributes["AllowRatings"].Value);
                         topic.Content = node.Attributes["Content"].Value;
@@ -247,7 +247,7 @@ namespace DotNetNuke.Wiki.Utilities
                         AuthorUserId = userID,
                         ModifiedTimeUtc = topic.UpdateDate.ToUniversalTime(),
                         ModuleId = moduleInfo.ModuleID,
-                        UniqueKey = $"wikitopic={WikiMarkup.EncodeTitle(topic.Name)}",
+                        UniqueKey = $"wikitopic={HttpUtility.UrlEncode(topic.Name)}",
                         Body = strContent,
                     };
                     searchDocuments.Add(searchDocument);

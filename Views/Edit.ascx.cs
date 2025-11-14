@@ -23,13 +23,16 @@
 
 #endregion Copyright
 
-using DotNetNuke.Security;
+using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Wiki.BusinessObjects.Exceptions;
 using DotNetNuke.Wiki.BusinessObjects.Models;
 using DotNetNuke.Wiki.Utilities;
+using Ganss.Xss;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 using System.Web;
 
 namespace DotNetNuke.Wiki.Views
@@ -39,6 +42,9 @@ namespace DotNetNuke.Wiki.Views
     /// </summary>
     public partial class Edit : WikiModuleBase
     {
+        protected readonly IDNNUtils dnnUtils;
+        protected readonly INavigationManager navigationManager;
+
         #region Constructor
 
         /// <summary>
@@ -48,6 +54,10 @@ namespace DotNetNuke.Wiki.Views
         {
             this.PreRender += this.Page_PreRender;
             this.Load += this.Page_Load;
+
+            // TODO: In DNN 10 we should be able to use constructor injection
+            this.dnnUtils = this.DependencyProvider.GetRequiredService<IDNNUtils>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -82,17 +92,17 @@ namespace DotNetNuke.Wiki.Views
             ////    ti = TopicBo.GetByNameForModule(ModuleId, PageTopic);
             ////}
 
-            this.PageTopic = WikiMarkup.DecodeTitle(this.txtPageName.Text.Trim());
+            this.PageTopic = HttpUtility.UrlDecode(this.txtPageName.Text.Trim());
 
             if (ti == null)
             {
                 this.SaveChanges();
                 if (this.PageTopic == WikiModuleBase.WikiHomeName)
                 {
-                    Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(this.TabId));
+                    Response.Redirect(this.navigationManager.NavigateURL(this.TabId));
                 }
 
-                Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.PageTopic)), false);
+                Response.Redirect(this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, string.Empty, "topic=" + HttpUtility.UrlEncode(this.PageTopic)), false);
             }
             else
             {
@@ -169,7 +179,7 @@ namespace DotNetNuke.Wiki.Views
                     }
                     else
                     {
-                        this.PageTopic = WikiMarkup.DecodeTitle(this.Request.QueryString["topic"].ToString()).Replace("[L]", string.Empty);
+                        this.PageTopic = HttpUtility.UrlDecode(this.Request.QueryString["topic"].ToString()).Replace("[L]", string.Empty);
                         CurrentTopic.Name = this.PageTopic;
                     }
                 }
@@ -223,11 +233,11 @@ namespace DotNetNuke.Wiki.Views
             // Send back to the Page View.
             if (string.IsNullOrEmpty(this.PageTopic))
             {
-                Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(this.TabId), false);
+                Response.Redirect(this.navigationManager.NavigateURL(this.TabId), false);
             }
             else
             {
-                Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.PageTopic)), false);
+                Response.Redirect(this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, string.Empty, "topic=" + HttpUtility.UrlEncode(this.PageTopic)), false);
             }
         }
 
@@ -321,15 +331,15 @@ namespace DotNetNuke.Wiki.Views
             SharedEnum.CrudOperation crudOperation = SharedEnum.CrudOperation.Insert;
             try
             {
-                DotNetNuke.Security.PortalSecurity objSec = new DotNetNuke.Security.PortalSecurity();
+                var sanitizer = new HtmlSanitizer();
+                var safeContent = sanitizer.Sanitize(HttpUtility.HtmlDecode(this.teContent.Text));
                 this.SaveTopic(
-                    HttpUtility.HtmlDecode(
-                    objSec.InputFilter(objSec.InputFilter(this.teContent.Text, PortalSecurity.FilterFlag.NoMarkup), PortalSecurity.FilterFlag.NoScripting)),
+                    safeContent,
                     this.AllowDiscuss.Checked,
                     this.AllowRating.Checked,
-                    objSec.InputFilter(WikiMarkup.DecodeTitle(this.txtTitle.Text.Trim()), PortalSecurity.FilterFlag.NoMarkup),
-                    objSec.InputFilter(this.txtDescription.Text.Trim(), PortalSecurity.FilterFlag.NoMarkup),
-                    objSec.InputFilter(this.txtKeywords.Text.Trim(), PortalSecurity.FilterFlag.NoMarkup),
+                    WebUtility.HtmlEncode(HttpUtility.UrlDecode(this.txtTitle.Text.Trim())),
+                    WebUtility.HtmlEncode(this.txtDescription.Text.Trim()),
+                    WebUtility.HtmlEncode(this.txtKeywords.Text.Trim()),
                     out crudOperation);
             }
             catch (TopicValidationException exc)
@@ -372,11 +382,11 @@ namespace DotNetNuke.Wiki.Views
             }
 
             // post the topic
-            DNNUtils.PostTopicCommentToJournal(
+            this.dnnUtils.PostTopicCommentToJournal(
                 summary.Replace("[TopicName]", this.PageTopic),
                 this.PageTopic,
                 string.Empty,
-                DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.PageTopic)),
+                this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + HttpUtility.UrlEncode(this.PageTopic)),
                 this.TabId,
                 this.PageTopic,
                 journalType,

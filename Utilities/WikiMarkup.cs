@@ -23,8 +23,13 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -33,11 +38,14 @@ namespace DotNetNuke.Wiki.Utilities
     /// <summary>
     /// The Class for Decoding and Encoding WikiMarkup Syntax
     /// </summary>
+    // TODO: Consider making this a service and using dependency injection to consume it,
+    // I am really not in love with the current design of inheritance
+    // in the context of an entity with a bunch of ignored columns.
     public abstract class WikiMarkup
     {
         #region Variables
 
-        private DotNetNuke.Entities.Portals.PortalSettings mPortalSettingsValue;
+        private IPortalSettings mPortalSettingsValue;
         private int mTabIDValue = -9999;
         protected const RegexOptions CCOptions = RegexOptions.Compiled | RegexOptions.Multiline;
         public const string CloseBracket = "]]";
@@ -46,6 +54,25 @@ namespace DotNetNuke.Wiki.Utilities
         #endregion Variables
 
         #region Properties
+
+        private INavigationManager navigationManager;
+
+        [IgnoreColumn]
+        protected INavigationManager NavigationManager
+        {
+            get
+            {
+                // TODO: I really hate doing this. We should refactor this class to be a service instead of a base class of an entity.
+                if (this.navigationManager == null)
+                {
+                    var globalsType = typeof(DotNetNuke.Common.Globals);
+                    var serviceProviderProperty = globalsType.GetProperty("DependencyProvider", BindingFlags.NonPublic | BindingFlags.Static);
+                    var serviceProvider = (IServiceProvider)serviceProviderProperty.GetValue(null);
+                    this.navigationManager = serviceProvider.GetRequiredService<INavigationManager>();
+                }
+                return this.navigationManager;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the tab identifier.
@@ -63,7 +90,7 @@ namespace DotNetNuke.Wiki.Utilities
         /// </summary>
         /// <value>The portal settings.</value>
         [IgnoreColumn]
-        public DotNetNuke.Entities.Portals.PortalSettings PortalSettings
+        public IPortalSettings PortalSettings
         {
             get { return this.mPortalSettingsValue; }
             set { this.mPortalSettingsValue = value; }
@@ -197,10 +224,10 @@ namespace DotNetNuke.Wiki.Utilities
             switch (vals.Length)
             {
                 case 1:
-                    return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(this.mTabIDValue, this.mPortalSettingsValue, string.Empty, "topic=" + EncodeTitle(HttpUtility.HtmlDecode(vals[0])))) + "\">" + vals[0].Replace("<", "<").Replace(">", ">") + "</a>";
+                    return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(this.mTabIDValue, this.mPortalSettingsValue, string.Empty, "topic=" + EncodeTitle(HttpUtility.HtmlDecode(vals[0])))) + "\">" + vals[0].Replace("<", "<").Replace(">", ">") + "</a>";
 
                 case 2:
-                    return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(this.mTabIDValue, this.mPortalSettingsValue, string.Empty, "topic=" + EncodeTitle(HttpUtility.HtmlDecode(vals[0])))) + "\">" + vals[1].Replace("<", "<").Replace(">", ">") + "</a>";
+                    return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(this.mTabIDValue, this.mPortalSettingsValue, string.Empty, "topic=" + EncodeTitle(HttpUtility.HtmlDecode(vals[0])))) + "\">" + vals[1].Replace("<", "<").Replace(">", ">") + "</a>";
 
                 case 3:
                     int value;
@@ -208,7 +235,7 @@ namespace DotNetNuke.Wiki.Utilities
                     {
                         if (vals[1].Trim().Length < 1)
                         {
-                            return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(
+                            return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(
                                 Convert.ToInt32(vals[2]),
                                 this.mPortalSettingsValue,
                                 string.Empty,
@@ -217,7 +244,7 @@ namespace DotNetNuke.Wiki.Utilities
                         }
                         else
                         {
-                            return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(
+                            return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(
                                 Convert.ToInt32(vals[2]),
                                 this.mPortalSettingsValue,
                                 string.Empty,
@@ -229,7 +256,7 @@ namespace DotNetNuke.Wiki.Utilities
                     {
                         if ((vals[1].Trim().Length < 1))
                         {
-                            return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(
+                            return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(
                                 this.mTabIDValue,
                                 this.mPortalSettingsValue,
                                 string.Empty,
@@ -238,7 +265,7 @@ namespace DotNetNuke.Wiki.Utilities
                         }
                         else
                         {
-                            return "<a href=\"" + RemoveHost(DotNetNuke.Common.Globals.NavigateURL(
+                            return "<a href=\"" + RemoveHost(this.NavigationManager.NavigateURL(
                                 this.mTabIDValue,
                                 this.mPortalSettingsValue,
                                 string.Empty,
@@ -285,21 +312,6 @@ namespace DotNetNuke.Wiki.Utilities
         public static string EncodeTitle(string val)
         {
             return HttpUtility.UrlEncode(val);
-
-            ////Dim encoding As New System.Text.ASCIIEncoding
-            ////Dim character As Char
-            ////Dim returnval As String
-            ////Dim encoded As Boolean
-
-            ////For Each character In val.ToCharArray()
-
-            //// Select Case character Case "+", "=", "~", "#", "%", "&", "*", "\", ":", """",
-            //// "<", ">", ".", "?", "/", "-" returnval = returnval + "--" +
-            //// Convert.ToByte(character).ToString() + "-" Case Else returnval = returnval +
-            //// character End Select
-
-            ////Next
-            ////Return returnval
         }
 
         /// <summary>
@@ -310,32 +322,6 @@ namespace DotNetNuke.Wiki.Utilities
         public static string DecodeTitle(string val)
         {
             return HttpUtility.UrlDecode(val);
-            ////If (val.IndexOf("-") > -1) Then
-            ////    Dim encoding As New System.Text.ASCIIEncoding
-            ////    Dim returnval As String
-            ////    Dim splitup As String() = val.Split("-")
-            ////    Dim section As String
-            ////    Dim nextIsByte As Boolean
-            ////    For Each section In splitup
-            ////        If nextIsByte = True Then
-            ////            nextIsByte = False
-            ////            If section.Length = 0 Then
-            ////                nextIsByte = True
-            ////            Else
-            ////                Dim bytes(0) As Byte
-            ////                bytes(0) = Convert.ToByte(section)
-            ////                returnval = returnval + encoding.GetString(bytes)
-            ////            End If
-            ////        ElseIf section.Length = 0 Then
-            ////            nextIsByte = True
-            ////        Else
-            ////            returnval = returnval + section
-            ////        End If
-            ////    Next
-            ////    Return returnval
-            ////Else
-            ////    Return val
-            ////End If
         }
 
         #endregion Methods
