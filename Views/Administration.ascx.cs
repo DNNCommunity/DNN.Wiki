@@ -23,15 +23,15 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Wiki.BusinessObjects;
 using DotNetNuke.Wiki.BusinessObjects.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Wiki.Views
@@ -41,6 +41,8 @@ namespace DotNetNuke.Wiki.Views
     /// </summary>
     public partial class Administration : PortalModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region Variables
 
         private const string StrUseDNNSettings = "UseDNNSettings";
@@ -58,6 +60,9 @@ namespace DotNetNuke.Wiki.Views
         {
             this.Load += this.CtrlPage_Load;
             this.Init += this.Page_Init;
+
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -121,7 +126,7 @@ namespace DotNetNuke.Wiki.Views
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void CancelButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
+            Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
         /// <summary>
@@ -311,7 +316,7 @@ namespace DotNetNuke.Wiki.Views
         protected void SaveButton_Click(object sender, EventArgs e)
         {
             this.SaveSettings();
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
+            Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
         #endregion Events

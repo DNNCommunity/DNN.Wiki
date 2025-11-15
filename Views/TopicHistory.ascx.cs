@@ -23,10 +23,13 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Globalization;
+using System.Web;
 
 namespace DotNetNuke.Wiki.Views
 {
@@ -35,6 +38,8 @@ namespace DotNetNuke.Wiki.Views
     /// </summary>
     public partial class TopicHistory : WikiModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region Constructor
 
         /// <summary>
@@ -43,6 +48,9 @@ namespace DotNetNuke.Wiki.Views
         public TopicHistory()
         {
             this.Load += this.Page_Load;
+
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -146,12 +154,12 @@ namespace DotNetNuke.Wiki.Views
             this.lblPageTopic.Text = PageTopic.Replace(WikiModuleBase.WikiHomeName, "Home");
             this.lblPageContent.Text = topicHistory.Cache;
             this.lblDateTime.Text = string.Format(Localization.GetString("HistoryAsOf", this.RouterResourceFile), topicHistory.UpdateDate.ToString(CultureInfo.CurrentCulture));
-            this.BackBtn.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(
+            this.BackBtn.NavigateUrl = this.navigationManager.NavigateURL(
                 this.TabId,
                 this.PortalSettings,
                 string.Empty,
                 "loc=TopicHistory",
-                "topic=" + WikiMarkup.EncodeTitle(this.PageTopic));
+                "topic=" + HttpUtility.UrlEncode(this.PageTopic));
         }
 
         /// <summary>
@@ -163,11 +171,11 @@ namespace DotNetNuke.Wiki.Views
 
             this.lblDateTime.Text = "...";
             this.lblPageContent.Text = Localization.GetString("HistoryListHeader", this.RouterResourceFile) + " <br /> " + this.CreateHistoryTable();
-            this.BackBtn.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(
+            this.BackBtn.NavigateUrl = this.navigationManager.NavigateURL(
                 this.TabId,
                 this.PortalSettings,
                 string.Empty,
-                "topic=" + WikiMarkup.EncodeTitle(this.PageTopic));
+                "topic=" + HttpUtility.UrlEncode(this.PageTopic));
         }
 
         #endregion Methods
