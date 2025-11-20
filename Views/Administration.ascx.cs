@@ -23,14 +23,15 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Roles;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Wiki.BusinessObjects;
 using DotNetNuke.Wiki.BusinessObjects.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Wiki.Views
@@ -40,6 +41,8 @@ namespace DotNetNuke.Wiki.Views
     /// </summary>
     public partial class Administration : PortalModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region Variables
 
         private const string StrUseDNNSettings = "UseDNNSettings";
@@ -57,6 +60,9 @@ namespace DotNetNuke.Wiki.Views
         {
             this.Load += this.CtrlPage_Load;
             this.Init += this.Page_Init;
+
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -120,7 +126,7 @@ namespace DotNetNuke.Wiki.Views
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void CancelButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
+            Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
         /// <summary>
@@ -298,8 +304,8 @@ namespace DotNetNuke.Wiki.Views
         /// data.</param>
         private void Page_Init(object sender, System.EventArgs e)
         {
-            Framework.jQuery.RequestUIRegistration();
-            Framework.jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>
@@ -310,7 +316,7 @@ namespace DotNetNuke.Wiki.Views
         protected void SaveButton_Click(object sender, EventArgs e)
         {
             this.SaveSettings();
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(), true);
+            Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
         #endregion Events
@@ -368,7 +374,7 @@ namespace DotNetNuke.Wiki.Views
             // process portal roles
             DotNetNuke.Security.Roles.RoleController objRoles = new DotNetNuke.Security.Roles.RoleController();
 
-            var arrRoles = objRoles.GetPortalRoles(PortalId).OfType<RoleInfo>();
+            var arrRoles = objRoles.GetRoles(PortalId);
             foreach (var objRole in arrRoles)
             {
                 arrAvailableAuthViewRoles.Add(new ListItem(objRole.RoleName, objRole.RoleName));

@@ -23,11 +23,13 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.BusinessObjects;
 using DotNetNuke.Wiki.BusinessObjects.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -42,6 +44,8 @@ namespace DotNetNuke.Wiki.Utilities
     /// </summary>
     public class WikiModuleBase : PortalModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region Variables
 
         public const string SharedResources = "/DesktopModules/Wiki/Views/App_LocalResources/SharedResources.resx";
@@ -75,6 +79,9 @@ namespace DotNetNuke.Wiki.Utilities
         /// </summary>
         public WikiModuleBase()
         {
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            
             this.Load += this.Page_Load;
             this.Unload += this.Page_Unload;
         }
@@ -300,7 +307,7 @@ namespace DotNetNuke.Wiki.Utilities
                 this.AddStylePageHeader(CSSWikiModuleCssId, CSSWikiModuleCssPath);
 
                 // congfigure the URL to the home page (the wiki without any parameters)
-                this.mHomeUrlValue = DotNetNuke.Common.Globals.NavigateURL();
+                this.mHomeUrlValue = this.navigationManager.NavigateURL();
 
                 // Get the pageTopic
                 if (this.Request.QueryString["topic"] == null)
@@ -316,7 +323,7 @@ namespace DotNetNuke.Wiki.Utilities
                 }
                 else
                 {
-                    this.mPageTopicValue = WikiMarkup.DecodeTitle(this.Request.QueryString["topic"].ToString());
+                    this.mPageTopicValue = HttpUtility.UrlDecode(this.Request.QueryString["topic"].ToString());
                 }
 
                 // Sets the wikiSettings
@@ -587,7 +594,7 @@ namespace DotNetNuke.Wiki.Utilities
 
                     tableHTML.Append("<tr>");
                     tableHTML.Append("<td><a class=\"CommandButton\" href=\"");
-                    tableHTML.Append(DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(localTopic.Name)));
+                    tableHTML.Append(this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + HttpUtility.UrlEncode(localTopic.Name)));
                     tableHTML.Append("\">");
                     tableHTML.Append(nameToUse);
                     tableHTML.Append("</a></td>");
@@ -662,7 +669,7 @@ namespace DotNetNuke.Wiki.Utilities
                     history.TabID = this.TabId;
                     history.PortalSettings = this.PortalSettings;
                     tableText.Append("<tr><td><a class=\"CommandButton\" rel=\"noindex,nofollow\" href=\"");
-                    tableText.Append(DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.mPageTopicValue), "loc=TopicHistory", "ShowHistory=" + history.TopicHistoryId.ToString()));
+                    tableText.Append(this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + HttpUtility.UrlEncode(this.mPageTopicValue), "loc=TopicHistory", "ShowHistory=" + history.TopicHistoryId.ToString()));
                     tableText.Append("\">");
                     tableText.Append(history.Name.Replace(WikiHomeName, "Home"));
 

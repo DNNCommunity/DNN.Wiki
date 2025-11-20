@@ -23,10 +23,13 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.BusinessObjects.Models;
 using DotNetNuke.Wiki.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Web;
 
 namespace DotNetNuke.Wiki.Views.SharedControls
 {
@@ -35,6 +38,8 @@ namespace DotNetNuke.Wiki.Views.SharedControls
     /// </summary>
     public partial class Index : WikiModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region Constructor
 
         /// <summary>
@@ -43,6 +48,9 @@ namespace DotNetNuke.Wiki.Views.SharedControls
         public Index()
         {
             this.Load += this.Page_Load;
+
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -91,10 +99,10 @@ namespace DotNetNuke.Wiki.Views.SharedControls
                         if (t.Name != WikiModuleBase.WikiHomeName)
                         {
                             tableText.Append("&nbsp;&nbsp;&nbsp<a class=\"CommandButton\" href=\"");
-                            tableText.Append(DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(t.Name)));
+                            tableText.Append(this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "topic=" + HttpUtility.UrlEncode(t.Name)));
                             tableText.Append("\"><img src=\"");
                             tableText.Append(this.DNNWikiModuleRootPath);
-                            tableText.Append("/Resources/images/Page.gif\" border=\"0\" align=\"middle\"  alt=\"" + WikiMarkup.EncodeTitle(t.Name) + "\" />&nbsp;");
+                            tableText.Append("/Resources/images/Page.gif\" border=\"0\" align=\"middle\"  alt=\"" + HttpUtility.UrlEncode(t.Name) + "\" />&nbsp;");
                             tableText.Append(t.Name);
                             tableText.Append("</a><br />");
                         }

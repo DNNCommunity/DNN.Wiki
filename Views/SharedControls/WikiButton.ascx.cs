@@ -23,9 +23,12 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Web;
 
 namespace DotNetNuke.Wiki.Views.SharedControls
 {
@@ -34,6 +37,8 @@ namespace DotNetNuke.Wiki.Views.SharedControls
     /// </summary>
     public partial class WikiButton : WikiModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
         #region "Properties"
 
         /// <summary>
@@ -68,6 +73,9 @@ namespace DotNetNuke.Wiki.Views.SharedControls
         public WikiButton()
         {
             this.Load += this.Page_Load;
+
+            // TODO: We should be able to use constructor injection here when we get to DNN 10.
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #endregion Constructor
@@ -112,11 +120,11 @@ namespace DotNetNuke.Wiki.Views.SharedControls
                 this.lnkEdit.Visible = this.CanEdit;
 
                 this.txtViewHistory.Visible = true;
-                this.txtViewHistory.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "loc=TopicHistory", "topic=" + WikiMarkup.EncodeTitle(this.PageTopic));
-                this.lnkEdit.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "topic=" + WikiMarkup.EncodeTitle(this.PageTopic) + "&loc=edit");
+                this.txtViewHistory.NavigateUrl = this.navigationManager.NavigateURL(this.TabId, this.PortalSettings, string.Empty, "loc=TopicHistory", "topic=" + HttpUtility.UrlEncode(this.PageTopic));
+                this.lnkEdit.NavigateUrl = this.navigationManager.NavigateURL(this.TabId, string.Empty, "topic=" + HttpUtility.UrlEncode(this.PageTopic) + "&loc=edit");
             }
 
-            this.cmdAdd.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, string.Empty, "&loc=edit&add=true");
+            this.cmdAdd.NavigateUrl = this.navigationManager.NavigateURL(this.TabId, string.Empty, "&loc=edit&add=true");
         }
 
         #endregion Methods

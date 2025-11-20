@@ -29,11 +29,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search;
+using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Wiki.BusinessObjects;
 using DotNetNuke.Wiki.BusinessObjects.Models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Xml;
@@ -51,89 +52,10 @@ namespace DotNetNuke.Wiki.Utilities
     /// populate with your own data.</para> <para>uncomment the interfaces to add the support.
     /// </para>
     /// </summary>
-    public class FeatureController : IPortable, ISearchable // , IUpgradeable
+    public class FeatureController : ModuleSearchBase, IPortable // , IUpgradeable
     {
-        //// Implements IUpgradeable
-
-        #region Variables
-
         private string mSharedResourceFile =
             DotNetNuke.Common.Globals.ApplicationPath + "/DesktopModules/Wiki/Views/" + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile;
-
-        #endregion Variables
-
-        #region Methods
-
-        /// <summary>
-        /// Gets the search items.
-        /// </summary>
-        /// <param name="modInfo">The module information.</param>
-        /// <returns>Topics that meet the search criteria.</returns>
-        public SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo)
-        {
-            using (UnitOfWork uOw = new UnitOfWork())
-            {
-                TopicBO topicBo = new TopicBO(uOw);
-
-                SearchItemInfoCollection searchItemCollection = new SearchItemInfoCollection();
-                var topics = topicBo.GetAllByModuleID(modInfo.ModuleID);
-                UserController uc = new UserController();
-
-                foreach (var topic in topics)
-                {
-                    SearchItemInfo searchItem = new SearchItemInfo();
-
-                    string strContent = null;
-                    string strDescription = null;
-                    string strTitle = null;
-                    if (!string.IsNullOrWhiteSpace(topic.Title))
-                    {
-                        strTitle = topic.Title;
-                    }
-                    else
-                    {
-                        strTitle = topic.Name;
-                    }
-
-                    if (topic.Cache != null)
-                    {
-                        strContent = topic.Cache;
-                        strContent += " " + topic.Keywords;
-                        strContent += " " + topic.Description;
-
-                        strDescription = HtmlUtils.Shorten(HtmlUtils.Clean(HttpUtility.HtmlDecode(topic.Cache), false), 100,
-                            Localization.GetString("Dots", this.mSharedResourceFile));
-                    }
-                    else
-                    {
-                        strContent = topic.Content;
-                        strContent += " " + topic.Keywords;
-                        strContent += " " + topic.Description;
-
-                        strDescription = HtmlUtils.Shorten(HtmlUtils.Clean(HttpUtility.HtmlDecode(topic.Content), false), 100,
-                            Localization.GetString("Dots", this.mSharedResourceFile));
-                    }
-
-                    int userID = 0;
-
-                    userID = Null.NullInteger;
-                    if (topic.UpdatedByUserID != -9999)
-                    {
-                        userID = topic.UpdatedByUserID;
-                    }
-
-                    searchItem = new SearchItemInfo(strTitle, strDescription, userID, topic.UpdateDate, modInfo.ModuleID, topic.Name, strContent, "topic=" + WikiMarkup.EncodeTitle(topic.Name));
-
-                    //// New SearchItemInfo(ModInfo.ModuleTitle & "-" & strTitle, strDescription,
-                    //// userID, topic.UpdateDate, ModInfo.ModuleID, topic.Name, strContent, _
-                    //// "topic=" & WikiMarkup.EncodeTitle(topic.Name))
-
-                    searchItemCollection.Add(searchItem);
-                }
-
-                return searchItemCollection;
-            }
-        }
 
         /// <summary>
         /// Exports the module.
@@ -148,7 +70,8 @@ namespace DotNetNuke.Wiki.Utilities
                 var topics = topicBo.GetAllByModuleID(moduleID);
 
                 ModuleController mc = new ModuleController();
-                Hashtable settings = mc.GetModuleSettings(moduleID);
+                var module = mc.GetModule(moduleID);
+                Hashtable settings = module.ModuleSettings;
 
                 StringWriter strXML = new StringWriter();
                 XmlWriter writer = new XmlTextWriter(strXML);
@@ -228,7 +151,7 @@ namespace DotNetNuke.Wiki.Utilities
                     {
                         node = node_loopVariable;
                         var topic = new Topic();
-                        topic.PortalSettings = PortalController.GetCurrentPortalSettings();
+                        topic.PortalSettings = PortalController.Instance.GetCurrentSettings();
                         topic.AllowDiscussions = bool.Parse(node.Attributes["AllowDiscussions"].Value);
                         topic.AllowRatings = bool.Parse(node.Attributes["AllowRatings"].Value);
                         topic.Content = node.Attributes["Content"].Value;
@@ -266,24 +189,72 @@ namespace DotNetNuke.Wiki.Utilities
             }
         }
 
-        //// Public Function UpgradeModule(ByVal Version As String) As String Implements
-        //// IUpgradeable.UpgradeModule InitPermissions() Return Version End Function
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
+        {
+            using (UnitOfWork uOw = new UnitOfWork())
+            {
+                TopicBO topicBo = new TopicBO(uOw);
 
-        //// Private Sub InitPermissions() Dim EditContent As Boolean
+                var searchDocuments = new List<SearchDocument>();
+                var topics = topicBo.GetAllByModuleID(moduleInfo.ModuleID);
+                UserController uc = new UserController();
 
-        //// Dim moduleDefId As Integer Dim pc As New PermissionController Dim permissions As
-        //// ArrayList = pc.GetPermissionByCodeAndKey("WIKI", Nothing) Dim dc As New
-        //// DesktopModuleController Dim desktopInfo As DesktopModuleInfo desktopInfo =
-        //// dc.GetDesktopModuleByModuleName("Wiki") Dim mc As New ModuleDefinitionController Dim
-        //// mInfo As ModuleDefinitionInfo mInfo =
-        //// mc.GetModuleDefinitionByName(desktopInfo.DesktopModuleID, "Wiki") moduleDefId =
-        //// mInfo.ModuleDefID For Each p As PermissionInfo In permissions If p.PermissionKey =
-        //// "EDIT_CONTENT" And p.ModuleDefID = moduleDefId Then _ EditContent = True Next If Not
-        //// EditContent Then Dim p As New PermissionInfo p.ModuleDefID = moduleDefId
-        //// p.PermissionCode
-        //// = "WIKI" p.PermissionKey = "EDIT_CONTENT" p.PermissionName = "Edit Content"
-        //// pc.AddPermission(p) End If End Sub
+                foreach (var topic in topics)
+                {
+                    string strContent = null;
+                    string strDescription = null;
+                    string strTitle = null;
+                    if (!string.IsNullOrWhiteSpace(topic.Title))
+                    {
+                        strTitle = topic.Title;
+                    }
+                    else
+                    {
+                        strTitle = topic.Name;
+                    }
 
-        #endregion Methods
+                    if (topic.Cache != null)
+                    {
+                        strContent = topic.Cache;
+                        strContent += " " + topic.Keywords;
+                        strContent += " " + topic.Description;
+
+                        strDescription = HtmlUtils.Shorten(HtmlUtils.Clean(HttpUtility.HtmlDecode(topic.Cache), false), 100,
+                            Localization.GetString("Dots", this.mSharedResourceFile));
+                    }
+                    else
+                    {
+                        strContent = topic.Content;
+                        strContent += " " + topic.Keywords;
+                        strContent += " " + topic.Description;
+
+                        strDescription = HtmlUtils.Shorten(HtmlUtils.Clean(HttpUtility.HtmlDecode(topic.Content), false), 100,
+                            Localization.GetString("Dots", this.mSharedResourceFile));
+                    }
+
+                    int userID = 0;
+
+                    userID = Null.NullInteger;
+                    if (topic.UpdatedByUserID != -9999)
+                    {
+                        userID = topic.UpdatedByUserID;
+                    }
+
+                    var searchDocument = new SearchDocument
+                    {
+                        Title = strTitle,
+                        Description = strDescription,
+                        AuthorUserId = userID,
+                        ModifiedTimeUtc = topic.UpdateDate.ToUniversalTime(),
+                        ModuleId = moduleInfo.ModuleID,
+                        UniqueKey = $"wikitopic={HttpUtility.UrlEncode(topic.Name)}",
+                        Body = strContent,
+                    };
+                    searchDocuments.Add(searchDocument);
+                }
+
+                return searchDocuments;
+            }
+        }
     }
 }

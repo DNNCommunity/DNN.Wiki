@@ -22,12 +22,15 @@
 
 #endregion Copyright
 
-using DotNetNuke.Security;
+using DotNetNuke.Common;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Wiki.BusinessObjects;
 using DotNetNuke.Wiki.BusinessObjects.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.ComponentModel;
+using System.Net;
+using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -51,6 +54,21 @@ namespace DotNetNuke.Wiki.Utilities
     [ToolboxData("<{0}:AddCommentsForm runat=server></{0}:AddCommentsForm>")]
     public class AddCommentsForm : WebControl
     {
+        private readonly IDNNUtils dnnUtils;
+
+        public AddCommentsForm()
+        {
+            // Obtain DNN DI container using reflection because DotNetNuke.Common.Globals.DependencyProvider is internal
+            // TODO: We may be able to remove this reflection hack in DNN 10 when the DI container is made public
+            var globalsType = typeof(Globals);
+            var serviceProviderProperty = globalsType.GetProperty("DependencyProvider", BindingFlags.NonPublic | BindingFlags.Static);
+            var serviceProvider = (IServiceProvider)serviceProviderProperty.GetValue(null);
+
+            this.dnnUtils = serviceProvider.GetRequiredService<IDNNUtils>();
+
+            this.Init += this.AddCommentsForm_Init;
+        }
+
         #region Variables
 
         private bool mCheckCommentsValue = true;
@@ -534,20 +552,19 @@ namespace DotNetNuke.Wiki.Utilities
                 var commentBo = new CommentBO(uOw);
 
                 string commentText = this.txtComment.Text;
-                DotNetNuke.Security.PortalSecurity objSec = new DotNetNuke.Security.PortalSecurity();
 
                 if (commentText.Length > this.CommentsMaxLength)
                 {
                     commentText = commentText.Substring(0, this.CommentsMaxLength);
                 }
-                ////4.8.3 has better control for NoMarkup
+
                 var comment = new Comment
                 {
                     ParentId = this.ParentId,
-                    Name = objSec.InputFilter(this.txtName.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup),
-                    Email = objSec.InputFilter(this.txtEmail.Text, DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup),
-                    CommentText = objSec.InputFilter(commentText, PortalSecurity.FilterFlag.NoMarkup),
-                    Ip = objSec.InputFilter(this.Context.Request.ServerVariables["REMOTE_ADDR"], DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup),
+                    Name = WebUtility.HtmlEncode(this.txtName.Text),
+                    Email = WebUtility.HtmlEncode(this.txtEmail.Text),
+                    CommentText = WebUtility.HtmlEncode(commentText),
+                    Ip = WebUtility.HtmlEncode(this.Context.Request.ServerVariables["REMOTE_ADDR"]),
                     EmailNotify = this.chkSubscribeToNotifications.Checked,
                     Datetime = DateTime.Now
                 };
@@ -555,7 +572,7 @@ namespace DotNetNuke.Wiki.Utilities
 
                 ////send the notification
                 var topic = new TopicBO(uOw).Get(this.ParentId);
-                DNNUtils.SendNotifications(uOw, topic, comment.Name, comment.Email, comment.CommentText, comment.Ip);
+                this.dnnUtils.SendNotifications(uOw, topic, comment.Name, comment.Email, comment.CommentText, comment.Ip);
                 this.mSuccessValue = comment.CommentId > 0;
 
                 if (this.mSuccessValue)
@@ -573,13 +590,5 @@ namespace DotNetNuke.Wiki.Utilities
         }
 
         #endregion Methods
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddCommentsForm"/> class.
-        /// </summary>
-        public AddCommentsForm()
-        {
-            this.Init += this.AddCommentsForm_Init;
-        }
     }
 }

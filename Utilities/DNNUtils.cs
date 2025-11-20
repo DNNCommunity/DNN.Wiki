@@ -23,9 +23,11 @@
 
 #endregion Copyright
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Journal;
@@ -42,8 +44,19 @@ namespace DotNetNuke.Wiki.Utilities
     /// <summary>
     /// DNN Utilities Class
     /// </summary>
-    public class DNNUtils
+    internal class DNNUtils : IDNNUtils
     {
+        private readonly IPortalController portalController;
+        private readonly INavigationManager navigationManager;
+
+        public DNNUtils(
+            IPortalController portalController,
+            INavigationManager navigationManager)
+        {
+            this.portalController = portalController;
+            this.navigationManager = navigationManager;
+        }
+
         /// <summary>
         /// Sends the notifications.
         /// </summary>
@@ -53,7 +66,7 @@ namespace DotNetNuke.Wiki.Utilities
         /// <param name="email">The email.</param>
         /// <param name="comment">The comment.</param>
         /// <param name="ipaddress">The IP Address.</param>
-        public static void SendNotifications(
+        public void SendNotifications(
             UnitOfWork uow,
             Topic topic,
             string name,
@@ -67,12 +80,12 @@ namespace DotNetNuke.Wiki.Utilities
 
                 if (lstEmailsAddresses.Count > 0)
                 {
-                    DotNetNuke.Entities.Portals.PortalSettings objPortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
+                    var portalSettings = this.portalController.GetCurrentSettings();
                     string strResourceFile = Globals.ApplicationPath + "/DesktopModules/Wiki/Views/" + Localization.LocalResourceDirectory + "/" + Localization.LocalSharedResourceFile;
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
 
-                    string redirectUrl = DotNetNuke.Common.Globals.NavigateURL(objPortalSettings.ActiveTab.TabID, objPortalSettings, string.Empty, "topic=" + WikiMarkup.EncodeTitle(topic.Name));
+                    var redirectUrl = this.navigationManager.NavigateURL(topic.TabID, portalSettings, string.Empty, "topic=" + HttpUtility.UrlEncode(topic.Name));
                     strBody = strBody.Replace("[URL]", redirectUrl);
 
                     strBody = strBody.Replace("[NAME]", name);
@@ -94,7 +107,7 @@ namespace DotNetNuke.Wiki.Utilities
                     //// sbUsersToEmail.ToString, strSubject, strBody, "", "", "", "", "", "")
 
                     Mail.SendMail(
-                        objPortalSettings.Email,
+                        portalSettings.Email,
                         usersToEmailSB.ToString(),
                         string.Empty,
                         string.Empty,
@@ -123,18 +136,19 @@ namespace DotNetNuke.Wiki.Utilities
         /// <param name="currentTab">The current tab.</param>
         /// <param name="topicName">Name of the topic.</param>
         /// <param name="journalType">Type of the journal.</param>
-        public static void PostTopicCommentToJournal(
+        public void PostTopicCommentToJournal(
             string summary,
             string title,
             string description,
             string linkToTopic,
             int currentTab,
             string topicName,
-            SharedEnum.DNNJournalType journalType)
+            SharedEnum.DNNJournalType journalType,
+            ModuleInfo moduleInfo)
         {
             if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                UserInfo user = UserController.GetCurrentUserInfo();
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
                 if (user != null)
                 {
                     // Post to DotnetNuke Journal
@@ -159,7 +173,7 @@ namespace DotNetNuke.Wiki.Utilities
                     //// http: //www.dnnsoftware.com/wiki/loc/history/Page/Journal/Revision/11
 
                     journalItem.Title = topicName;
-                    journalController.SaveJournalItem(journalItem, currentTab); // saving
+                    journalController.SaveJournalItem(journalItem, moduleInfo);
                 }
             }
         }
