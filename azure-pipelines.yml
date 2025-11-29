@@ -31,7 +31,10 @@ jobs:
   # you would like to use the option parameters just uncomment 
   # 'parameters:' and then the parameters you would like to use
 
-  #parameters:
+  parameters:
+    githubRepo: 'DNN.Wiki'
+    #githubOrganization: 'DNNCommunity' # Sets the fork organization or person. This is useful for testing releases on forks. This should be left blank, the default is 'DNNCommunity'
+    #releaseBranch: 'refs/heads/master' # Sets the release branch, most Core Modules use 'refs/head/master' which is the default. If you want to specify a different release branch use this parameter.
     #version: "5.0.1.$[counter('versioncounter', 0)]" # Sets the current build version that includes a revision counter. Default: '1.0.0.0'
     #configuration: 'Release' # The build configuration. Default: 'Release'
     #platform: 'Any CPU' # The build platform. Default: 'Any CPU'
